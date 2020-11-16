@@ -78,8 +78,17 @@ Type -> id | "double" | "float" | "int32" | "uint32" | "int64" | "uint64" | "boo
 
 注：`("=" num)`仅用于兼容`proto`文件格式，不起任何作用
 
+### 使用
+
+在完成安装`pip install .`后，可以使用如下指令执行：
+
+```bash
+python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
+```
+
 ### 计划
 
 - [ ] 添加序列化的模板
-- [ ] 编写CLI，生成二进制文件并支持`pip install .`
+- [x] 编写CLI，生成二进制文件并支持`pip install .`
+- [ ] 引入clang-format
 - [ ] 完善测试与代码覆盖率测试
