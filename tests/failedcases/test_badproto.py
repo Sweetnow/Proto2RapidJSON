@@ -13,7 +13,7 @@ def pipeline(name: str, error: Type[Exception]):
     # Step 1: proto -> h
     parent = os.path.dirname(__file__)
     proto_path = os.path.join(parent, f'proto/{name}.proto')
-    header_path = os.path.join(parent, 'cpp/proto.h')
+    header_path = os.path.join(parent, '../cpp/proto.h')
     with pytest.raises(error):
         entry(proto_path, header_path, True)
 
