@@ -2,7 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
-from typing import List, NamedTuple, OrderedDict
+from typing import List, NamedTuple
+try:
+    from typing import OrderedDict
+    OrderedDictType = OrderedDict
+except ImportError:
+    from typing import MutableMapping
+    from collections import OrderedDict
+    OrderedDictType = MutableMapping
 from .lexer import TYPE_RESERVED_WORDS, Token, TokenKind
 
 __all__ = ['TokenError', 'ElementKind', 'Element', 'Message', 'Parser']
@@ -140,7 +147,7 @@ v.AddMember("{self.identifier}", {body}, allocator);
 
 class Message(NamedTuple):
     identifier: str
-    elements: OrderedDict[str, Element]
+    elements: OrderedDictType[str, Element]
 
     def to_struct(self) -> str:
         define_variable = f'{set_indent("".join(e.to_declaration() for e in self.elements.values()), 4, True)}'
@@ -207,7 +214,7 @@ class Parser:
         self.tokens = tokens
         self.unique_macro = unique_macro
         self.package: str
-        self.messages: OrderedDict[str, Message] = OrderedDict()
+        self.messages: OrderedDictType[str, Message] = OrderedDict()
         self.parse()
 
     def try_match_reserved(self, word: str) -> bool:
