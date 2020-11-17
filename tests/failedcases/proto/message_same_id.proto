@@ -1,0 +1,10 @@
+package proto;
+
+message Main {
+    bool isok = 1;
+    int32 id = 2;
+}
+
+message Main {
+    string _1 = 1;
+}

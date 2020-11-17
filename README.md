@@ -98,4 +98,4 @@ python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
 - [x] 添加序列化的模板
 - [x] 编写CLI，生成二进制文件并支持`pip install .`
 - [x] 完善测试与代码覆盖率测试
-- [ ] 禁止相同id
+- [x] 禁止相同id

@@ -47,3 +47,11 @@ def test_noid():
 
 def test_nonumber():
     pipeline('nonumber', TokenError)
+
+
+def test_message_same_id():
+    pipeline('message_same_id', Exception)
+
+
+def test_element_same_id():
+    pipeline('element_same_id', Exception)

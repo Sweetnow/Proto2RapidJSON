@@ -1,0 +1,6 @@
+package proto;
+
+message Main {
+    string _1 = 1;
+    string _1 = 2;
+}
