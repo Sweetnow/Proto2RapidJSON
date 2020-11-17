@@ -1,0 +1,4 @@
+package proto;
+message Main {
+    int32 $1a;
+}

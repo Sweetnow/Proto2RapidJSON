@@ -1,0 +1,7 @@
+message Main {
+    int32 _1;
+    int64 _2;
+    uint32 _3;
+    bool _4;
+    string _5;
+}

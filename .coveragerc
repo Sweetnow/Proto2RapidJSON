@@ -1,0 +1,3 @@
+[run]
+source = proto2rapidjson/
+omit = proto2rapidjson/__main__.py,proto2rapidjson/__init__.py

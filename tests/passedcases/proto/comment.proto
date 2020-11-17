@@ -1,0 +1,14 @@
+// This is comment
+package proto; // This is comment
+// This is comment
+message Main {
+    // This is comment
+    int32 _1=1;
+    uint64 _2= 2;
+    uint32 _3 =3;
+    int64 _4 = 4;
+    bool _5 = 5;
+    string _6 = 6;
+    float _7 = 7; // This is comment
+    double _8 = 8;
+}
