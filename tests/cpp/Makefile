@@ -1,6 +1,6 @@
 CC=g++
 CCFLAGS=-Wall -Wextra -O2 -std=c++17
-INCLUDES=-I ../../../
+INCLUDES=-I ../../
 EXEC=main
 
 main.out: main.cpp

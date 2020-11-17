@@ -16,6 +16,15 @@ class TokenError(Exception):
         super().__init__(self.message)
 
 
+API_NAME = {
+    'parse_entry': 'FromString',
+    'parse_worker': 'FromValue',
+    'stringify_entry': 'ToString',
+    'stringify_worker': 'ToValue',
+    'pretty_stringify_entry': 'ToPrettyString'
+}
+
+
 class ElementKind(Enum):
     custom = 0
     double = 1
@@ -36,9 +45,19 @@ class ElementKind(Enum):
             ElementKind.int64: 'int64_t',
             ElementKind.uint64: 'uint64_t',
             ElementKind.bool: 'bool',
-            ElementKind.string: 'const char *'
+            ElementKind.string: 'std::string'
         }
         return d[self]
+
+
+def set_indent(s: str, indent: int, newline: bool) -> str:
+    """set the indent of each line in `s` `indent`"""
+    lines = s.splitlines(False)
+    new_lines = []
+    for line in lines:
+        line = ' '*indent + line
+        new_lines.append(line)
+    return '\n'.join(new_lines)+('\n' if newline else '')
 
 
 class Element(NamedTuple):
@@ -53,7 +72,7 @@ class Element(NamedTuple):
         else:
             return f'{self.kindstr} {self.identifier};\n'
 
-    def to_get(self) -> str:
+    def to_parse(self) -> str:
         if self.repeated:
             base = 'i'
         else:
@@ -78,11 +97,11 @@ class Element(NamedTuple):
             ElementKind.uint64: f'{base}.GetUint64()',
             ElementKind.bool: f'{base}.GetBool()',
             ElementKind.string: f'{base}.GetString()',
-            ElementKind.custom: f'{self.kindstr}().Get({base})'
+            ElementKind.custom: f'{self.kindstr}().{API_NAME["parse_worker"]}({base})'
         }
 
         if self.repeated:
-            return f'''//parse {self.identifier}
+            return f'''// parse {self.identifier}
 assert(v.HasMember("{self.identifier}"));
 assert(v["{self.identifier}"].IsArray());
 for (auto&& i : v["{self.identifier}"].GetArray()) {{
@@ -91,10 +110,32 @@ for (auto&& i : v["{self.identifier}"].GetArray()) {{
 }}
 '''
         else:
-            return f'''//parse {self.identifier}
+            return f'''// parse {self.identifier}
 assert(v.HasMember("{self.identifier}"));
 assert({check_function[self.kind]});
 {self.identifier} = {get_function[self.kind]};
+'''
+
+    def to_stringify(self) -> str:
+        if self.repeated:
+            base = 'i'
+        else:
+            base = self.identifier
+        if self.kind == ElementKind.custom:
+            body = f'{base}.ToValue(allocator)'
+        else:
+            body = f'{base}'
+        if self.repeated:
+            return f'''// stringify {self.identifier}
+a.SetArray();
+for (auto&& i : {self.identifier}) {{
+    a.PushBack({body}, allocator);
+}}
+v.AddMember("{self.identifier}", a, allocator);
+'''
+        else:
+            return f'''// stringify {self.identifier}
+v.AddMember("{self.identifier}", {body}, allocator);
 '''
 
 
@@ -103,22 +144,62 @@ class Message(NamedTuple):
     elements: List[Element]
 
     def to_struct(self) -> str:
-        body = []
-        for lines in [e.to_get().splitlines(False) for e in self.elements]:
-            body += lines
-        body = '\n        '.join(body)
-        return f'''struct {self.identifier} {{
-    {'    '.join(e.to_declaration() for e in self.elements)}
-    {self.identifier}& Parse(const char* str) {{
+        define_variable = f'{set_indent("".join(e.to_declaration() for e in self.elements), 4, True)}'
+        parse_entry = \
+            f'''    {self.identifier}& {API_NAME["parse_entry"]}(const char* str) {{
         rapidjson::Document document;
         document.Parse(str);
         assert(document.IsObject());
-        return Get(document);
+        return {API_NAME["parse_worker"]}(document);
     }}
-    {self.identifier}& Get(const rapidjson::Value& v) {{
-        {body}
+'''
+        parse_worker = \
+            f'''    {self.identifier}& {API_NAME["parse_worker"]}(const rapidjson::Value& v) {{
+{set_indent(''.join(e.to_parse() for e in self.elements), 8, False)}
         return *this;
     }}
+'''
+        stringify_entry = \
+            f'''    std::string {API_NAME["stringify_entry"]}() {{
+        rapidjson::Document document;
+        document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        document.Accept(writer);
+        return buffer.GetString();
+    }}
+'''
+
+        pretty_stringify_entry = \
+            f'''    std::string {API_NAME["pretty_stringify_entry"]}() {{
+        rapidjson::Document document;
+        document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
+        rapidjson::StringBuffer buffer;
+        rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+        document.Accept(writer);
+        return buffer.GetString();
+    }}
+'''
+
+
+        anylist = any(e.repeated for e in self.elements)
+        arraystr = 'rapidjson::Value a;\n' if anylist else ''
+        stringify_worker = \
+            f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator) {{
+        rapidjson::Value v(rapidjson::kObjectType);
+        {arraystr}
+{set_indent(''.join(e.to_stringify() for e in self.elements), 8, False)}
+        return v;
+    }}
+'''
+
+        return f'''struct {self.identifier} {{
+{define_variable}
+{parse_entry}
+{parse_worker}
+{stringify_entry}
+{pretty_stringify_entry}
+{stringify_worker}
 }};
 '''
 
@@ -215,9 +296,16 @@ class Parser:
 // Generated by Proto2RapidJSON
 // https://github.com/Sweetnow/proto2rapidjson
 
+#define RAPIDJSON_HAS_STDSTRING 1
+
+#include <string.h>
+
 #include <vector>
+#include <string>
 
 #include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
 
 namespace {self.package} {{
 {''.join(m.to_struct() for m in self.messages.values())}

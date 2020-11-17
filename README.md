@@ -47,19 +47,24 @@ message A {
 ```c++
 struct B {
     bool isok;
-    B& Parse(const char* str);
-    B& Get(const rapidjson::Value& v);
+    B& FromString(const char* str);
+    B& FromValue(const rapidjson::Value& v);
+    std::string ToString();
+    std::string ToPrettyString();
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
 }
 
 struct A {
     double x;
     int y;
     std::vector<B> b;
-    A& Parse(const char* str);
-    A& Get(const rapidjson::Value& v);
+    A& FromString(const char* str);
+    A& FromValue(const rapidjson::Value& v);
+    std::string ToString();
+    std::string ToPrettyString();
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
 }
 ```
-
 ### 保留字
 
 ```
@@ -90,8 +95,7 @@ python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
 
 ### 计划
 
-- [ ] 添加序列化的模板
+- [x] 添加序列化的模板
 - [x] 编写CLI，生成二进制文件并支持`pip install .`
 - [x] 完善测试与代码覆盖率测试
 - [ ] 禁止相同id
-- [ ] 引入clang-format
