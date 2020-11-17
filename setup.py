@@ -8,11 +8,12 @@ with open("README.md", "r") as fh:
 
 setup(
     name='proto2rapidjson',
-    version='0.0.1',
+    version='1.0.0',
     packages=find_packages(),
+    python_requires=">=3.6",
     description='Convert .proto file to header-only RapidJSON based c++ code',
     author='Jun Zhang',
-    author_email='zhangjun990222@qq.com',
+    author_email='zhangjun990222@gmail.com',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Sweetnow/proto2rapidjson",
