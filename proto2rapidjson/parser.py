@@ -2,7 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
-from typing import List, NamedTuple, OrderedDict
+from typing import List, NamedTuple
+try:
+    from typing import OrderedDict
+except ImportError:
+    from typing import MutableMapping
+    OrderedDict = MutableMapping
 from .lexer import TYPE_RESERVED_WORDS, Token, TokenKind
 
 __all__ = ['TokenError', 'ElementKind', 'Element', 'Message', 'Parser']
