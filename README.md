@@ -1,5 +1,5 @@
 # Proto2RapidJSON
-
+![Python package](https://github.com/Sweetnow/Proto2RapidJSON/workflows/Python%20package/badge.svg) [![codecov](https://codecov.io/gh/Sweetnow/Proto2RapidJSON/branch/main/graph/badge.svg)](https://codecov.io/gh/Sweetnow/Proto2RapidJSON)
 ---
 
 ### 简介
@@ -76,7 +76,9 @@ Element -> Type id ("=" num) ";" | "repeated" Type id ("=" num) ;"
 Type -> id | "double" | "float" | "int32" | "uint32" | "int64" | "uint64" | "bool" | "string"
 ```
 
-注：`("=" num)`仅用于兼容`proto`文件格式，不起任何作用
+注1：`("=" num)`仅用于兼容`proto`文件格式，不起任何作用
+
+注2：`id`允许包含数字与下划线，且不允许数字开头
 
 ### 使用
 
@@ -90,5 +92,6 @@ python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
 
 - [ ] 添加序列化的模板
 - [x] 编写CLI，生成二进制文件并支持`pip install .`
+- [x] 完善测试与代码覆盖率测试
+- [ ] 禁止相同id
 - [ ] 引入clang-format
-- [ ] 完善测试与代码覆盖率测试
