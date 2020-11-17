@@ -1,0 +1,7 @@
+{
+    "_1": "This is a nested proto",
+    "one": {
+        "isok": true,
+        "id": 21111110
+    }
+}

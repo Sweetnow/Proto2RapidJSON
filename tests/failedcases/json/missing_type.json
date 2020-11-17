@@ -1,0 +1,12 @@
+{
+    "one": [
+        {
+            "isok": true,
+            "id": 123
+        }
+    ],
+    "two": {
+        "isok": false,
+        "id": 0
+    }
+}

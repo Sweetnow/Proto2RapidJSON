@@ -49,11 +49,14 @@ def scan(input: str) -> List[Token]:
                 continue
             # scan identifier
             identifier = ''
-            for c in line:
-                if identifier == '' and c.isalpha() or identifier != '' and c.isalnum():
-                    identifier += c
+            i = 0
+            while i < len(line):
+                if line[:i+1].isidentifier():
+                    i += 1
+                    continue
                 else:
                     break
+            identifier = line[:i]
             if identifier != '':
                 line = line[len(identifier):]
                 tokens.append(Token(identifier, TokenKind.IDENTIDIER, i+1))

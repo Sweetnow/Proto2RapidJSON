@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
 from argparse import ArgumentParser
-from . import scan, Parser
+from . import entry
+
+__all__ = ['entry']
 
 
 def get_argparser() -> ArgumentParser:
@@ -20,20 +21,8 @@ def get_argparser() -> ArgumentParser:
 
 def main():
     args = get_argparser().parse_args()
-    with open(args.input, 'r') as fin:
-        s = fin.read()
-    if os.path.exists(args.output):
-        if not args.yes:
-            check = input(
-                f'File {args.output} is existed, do you want to overwrite it? [y/N]')
-            if check.lower() == 'y' or check == '':
-                pass
-            else:
-                exit(0)
-    tokens = scan(s)
-    parser = Parser(tokens)
-    with open(args.output, 'w') as fout:
-        fout.write(parser.tocpp())
+    entry(args.input, args.output, args.yes)
+
 
 if __name__ == "__main__":
     main()
