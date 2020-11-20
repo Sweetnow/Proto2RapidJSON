@@ -172,22 +172,24 @@ class Message(NamedTuple):
     }}
 '''
         stringify_entry = \
-            f'''    std::string {API_NAME["stringify_entry"]}() {{
+            f'''    std::string {API_NAME["stringify_entry"]}(int maxDecimalPlaces = 6) {{
         rapidjson::Document document;
         document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
         rapidjson::StringBuffer buffer;
         rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        writer.SetMaxDecimalPlaces(maxDecimalPlaces);
         document.Accept(writer);
         return buffer.GetString();
     }}
 '''
 
         pretty_stringify_entry = \
-            f'''    std::string {API_NAME["pretty_stringify_entry"]}() {{
+            f'''    std::string {API_NAME["pretty_stringify_entry"]}(int maxDecimalPlaces = 6) {{
         rapidjson::Document document;
         document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
         rapidjson::StringBuffer buffer;
         rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
+        writer.SetMaxDecimalPlaces(maxDecimalPlaces);
         document.Accept(writer);
         return buffer.GetString();
     }}

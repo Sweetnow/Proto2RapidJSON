@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='proto2rapidjson',
-    version='1.0.0',
+    version='1.1.0',
     packages=find_packages(),
     python_requires=">=3.6",
     description='Convert .proto file to header-only RapidJSON based c++ code',
