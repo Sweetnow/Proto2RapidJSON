@@ -53,7 +53,7 @@ struct B {
     B& FromValue(const rapidjson::Value& v);
     std::string ToString(int maxDecimalPlaces = 6);
     std::string ToPrettyString(int maxDecimalPlaces = 6);
-    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);
 }
 
 struct A {
@@ -64,7 +64,7 @@ struct A {
     A& FromValue(const rapidjson::Value& v);
     std::string ToString(int maxDecimalPlaces = 6);
     std::string ToPrettyString(int maxDecimalPlaces = 6);
-    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);
 }
 ```
 功能如下：
