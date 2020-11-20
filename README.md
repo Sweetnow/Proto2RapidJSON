@@ -8,6 +8,8 @@
 - 本工具生成的C++代码只依赖RapidJSON与C++11 STL；
 - 本工具支持//注释。
 
+本工具使用MIT协议。
+
 ### 基本格式
 ```protobuf
 package test;
@@ -49,8 +51,8 @@ struct B {
     bool isok;
     B& FromString(const char* str);
     B& FromValue(const rapidjson::Value& v);
-    std::string ToString();
-    std::string ToPrettyString();
+    std::string ToString(int maxDecimalPlaces = 6);
+    std::string ToPrettyString(int maxDecimalPlaces = 6);
     rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
 }
 
@@ -60,11 +62,23 @@ struct A {
     std::vector<B> b;
     A& FromString(const char* str);
     A& FromValue(const rapidjson::Value& v);
-    std::string ToString();
-    std::string ToPrettyString();
+    std::string ToString(int maxDecimalPlaces = 6);
+    std::string ToPrettyString(int maxDecimalPlaces = 6);
     rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);
 }
 ```
+功能如下：
+
+| 函数签名                                                     | 功能                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `A& FromString(const char* str);`                            | 从JSON格式字符串`str`解析数据，写入结构体                    |
+| `A& FromValue(const rapidjson::Value& v);`                   | 从`rapidjson::Value`中获取数据，写入结构体                   |
+| `std::string ToString(int maxDecimalPlaces = 6);`            | 将结构体中数据序列化为字符串（紧凑），浮点数小数部分长度为`maxDecimalPlaces` |
+| `std::string ToPrettyString(int maxDecimalPlaces = 6);`      | 将结构体中数据序列化为字符串（适合阅读），浮点数小数部分长度为`maxDecimalPlaces` |
+| `rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);` | 将结构体中数据转化为`rapidjson::Value`                       |
+
+
+
 ### 保留字
 
 ```
@@ -84,6 +98,12 @@ Type -> id | "double" | "float" | "int32" | "uint32" | "int64" | "uint64" | "boo
 注1：`("=" num)`仅用于兼容`proto`文件格式，不起任何作用
 
 注2：`id`允许包含数字与下划线，且不允许数字开头
+
+### 安装
+
+```bash
+pip install proto2rapidjson
+```
 
 ### 使用
 
