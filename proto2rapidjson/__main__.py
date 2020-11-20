@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# ***********************************************************************************
+# * Copyright 2020 Jun Zhang. All Rights Reserved.                                  *
+# * Distributed under MIT license.                                                  *
+# * See file LICENSE for details for copy at https://opensource.org/licenses/MIT    *
+# ***********************************************************************************
+
 from argparse import ArgumentParser
 from . import entry
+
 
 __all__ = ['entry']
 
