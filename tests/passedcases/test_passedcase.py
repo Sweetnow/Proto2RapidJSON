@@ -50,3 +50,6 @@ def test_more():
 
 def test_comment():
     pipeline('comment')
+
+def test_string_array():
+    pipeline('string_array')

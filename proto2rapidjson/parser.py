@@ -138,7 +138,21 @@ assert({check_function[self.kind]});
         else:
             body = f'{base}'
         if self.repeated:
-            return f'''// stringify {self.identifier}
+            if self.kind == ElementKind.string:
+                # overwrite
+                return f'''// stringify {self.identifier}
+a.SetArray();
+for (auto&& i : {self.identifier}) {{
+    if (copy) {{
+        a.PushBack(rapidjson::Value().SetString(i.data(), i.size(), allocator), allocator);
+    }} else {{
+        a.PushBack(rapidjson::StringRef(i), allocator);
+    }}
+}}
+v.AddMember("{self.identifier}", a, allocator);
+'''
+            else:
+                return f'''// stringify {self.identifier}
 a.SetArray();
 for (auto&& i : {self.identifier}) {{
     a.PushBack({body}, allocator);
@@ -198,7 +212,7 @@ class Message(NamedTuple):
         anylist = any(e.repeated for e in self.elements.values())
         arraystr = 'rapidjson::Value a;\n' if anylist else ''
         stringify_worker = \
-            f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator) {{
+            f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) {{
         rapidjson::Value v(rapidjson::kObjectType);
         {arraystr}
 {set_indent(''.join(e.to_stringify() for e in self.elements.values()), 8, False)}
