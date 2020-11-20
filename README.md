@@ -75,7 +75,7 @@ struct A {
 | `A& FromValue(const rapidjson::Value& v);`                   | 从`rapidjson::Value`中获取数据，写入结构体                   |
 | `std::string ToString(int maxDecimalPlaces = 6);`            | 将结构体中数据序列化为字符串（紧凑），浮点数小数部分长度为`maxDecimalPlaces` |
 | `std::string ToPrettyString(int maxDecimalPlaces = 6);`      | 将结构体中数据序列化为字符串（适合阅读），浮点数小数部分长度为`maxDecimalPlaces` |
-| `rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator);` | 将结构体中数据转化为`rapidjson::Value`                       |
+| `rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);` | 将结构体中数据转化为`rapidjson::Value`，对于`array<string>`，`copy`用于控制是否采用`copy-string`策略（默认为`const-string`策略）*注：这里可能有未发现的潜在问题* |
 
 
 

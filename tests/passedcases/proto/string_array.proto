@@ -1,0 +1,4 @@
+package proto;
+message Main {
+    repeated string strs=1;
+}
