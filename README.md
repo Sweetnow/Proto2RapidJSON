@@ -119,3 +119,4 @@ python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
 - [x] 编写CLI，生成二进制文件并支持`pip install .`
 - [x] 完善测试与代码覆盖率测试
 - [x] 禁止相同id
+- [ ] 允许在package处使用A.B.C生成C++中A::B::C的namespace

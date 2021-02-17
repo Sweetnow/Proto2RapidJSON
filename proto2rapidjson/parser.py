@@ -213,6 +213,7 @@ class Message(NamedTuple):
         arraystr = 'rapidjson::Value a;\n' if anylist else ''
         stringify_worker = \
             f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) {{
+        (void)copy;
         rapidjson::Value v(rapidjson::kObjectType);
         {arraystr}
 {set_indent(''.join(e.to_stringify() for e in self.elements.values()), 8, False)}
