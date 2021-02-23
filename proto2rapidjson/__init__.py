@@ -38,7 +38,7 @@ def entry(fin_name: str, fout_name: str, overwrite: bool) -> None:
     parser = Parser(tokens, os.path.splitext(os.path.basename(fin_name))[0])
     with open(fout_name, 'w') as fout:
         fout.write('// ******************************\n')
-        fout.write(f'// Origin: {fin_name}\n// Content:\n')
+        fout.write(f'// Origin: {os.path.basename(fin_name)}\n// Content:\n')
         fout.write(set_comment(s))
         fout.write('// ******************************\n\n')
         fout.write(parser.tocpp())
