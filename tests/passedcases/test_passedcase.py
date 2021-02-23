@@ -12,20 +12,20 @@ import subprocess
 from proto2rapidjson import entry
 
 
-def pipeline(name: str):
-    # Step 1: proto -> h
+def pipeline(name: str, cpp_relative_path: str = '../cpp'):
     parent = os.path.dirname(__file__)
+    cpp_path = os.path.join(parent, cpp_relative_path)
+    # Step 1: proto -> h
     proto_path = os.path.join(parent, f'proto/{name}.proto')
-    header_path = os.path.join(parent, '../cpp/proto.h')
+    header_path = os.path.join(cpp_path, 'proto.h')
     entry(proto_path, header_path, True)
 
     # Step 2: h -> out
-    cpp_path = os.path.join(parent, '../cpp/')
     subprocess.call(['make', 'clean'], cwd=cpp_path)
     assert(subprocess.call(['make'], cwd=cpp_path) == 0)
 
     # Step 3: parse json
-    exe_path = os.path.join(parent, '../cpp/main.out')
+    exe_path = os.path.join(cpp_path, 'main.out')
     json_path = os.path.join(parent, f'json/{name}.json')
     assert(subprocess.call([exe_path, json_path]) == 0)
 
@@ -53,3 +53,6 @@ def test_comment():
 
 def test_string_array():
     pipeline('string_array')
+
+def test_namespace():
+    pipeline('namespace', '../cpp_namespace')

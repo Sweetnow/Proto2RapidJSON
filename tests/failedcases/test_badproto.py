@@ -61,3 +61,11 @@ def test_message_same_id():
 
 def test_element_same_id():
     pipeline('element_same_id', Exception)
+
+
+def test_dot_in_message_name():
+    pipeline('dot_in_message_name', TokenError)
+
+
+def test_dot_in_element_name():
+    pipeline('dot_in_element_name', TokenError)

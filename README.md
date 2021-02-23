@@ -5,7 +5,7 @@
 ### 简介
 本工具旨在利用[proto](https://developers.google.com/protocol-buffers/docs/proto3)文件生成基于[RapidJSON](https://rapidjson.org/)的JSON文件解析与序列化的C++工具。
 - 本工具只会支持最基本的类proto语法，但保证其强类型属性；
-- 本工具生成的C++代码只依赖RapidJSON与C++11 STL；
+- 本工具生成的C++代码只依赖RapidJSON与C++11 STL，如果需要使用nested namespace则需要C++20的支持；
 - 本工具支持//注释。
 
 本工具使用MIT协议。
@@ -119,4 +119,4 @@ python -m proto2rapidjson -i <INPUT> -o <OUTPUT>
 - [x] 编写CLI，生成二进制文件并支持`pip install .`
 - [x] 完善测试与代码覆盖率测试
 - [x] 禁止相同id
-- [ ] 允许在package处使用A.B.C生成C++中A::B::C的namespace
+- [x] 允许在package处使用A.B.C生成C++中A::B::C的namespace

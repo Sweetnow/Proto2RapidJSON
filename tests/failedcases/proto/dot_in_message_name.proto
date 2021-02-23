@@ -1,0 +1,5 @@
+package proto;
+
+message Main.a {
+    string a = 1;
+}

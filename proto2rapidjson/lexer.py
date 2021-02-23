@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ***********************************************************************************
-# * Copyright 2020 Jun Zhang. All Rights Reserved.                                  *
+# * Copyright 2020-2021 Jun Zhang. All Rights Reserved.                                  *
 # * Distributed under MIT license.                                                  *
 # * See file LICENSE for details for copy at https://opensource.org/licenses/MIT    *
 # ***********************************************************************************
@@ -56,7 +56,7 @@ def scan(input: str) -> List[Token]:
             identifier = ''
             i = 0
             while i < len(line):
-                if line[:i+1].isidentifier():
+                if line[:i+1].replace('.', '_').isidentifier():
                     i += 1
                     continue
                 else:
