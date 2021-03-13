@@ -56,3 +56,6 @@ def test_string_array():
 
 def test_namespace():
     pipeline('namespace', '../cpp_namespace')
+
+def test_syntax():
+    pipeline('syntax')

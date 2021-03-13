@@ -69,3 +69,6 @@ def test_dot_in_message_name():
 
 def test_dot_in_element_name():
     pipeline('dot_in_element_name', TokenError)
+
+def test_bad_syntax():
+    pipeline('bad_syntax', ValueError)

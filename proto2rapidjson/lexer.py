@@ -16,7 +16,7 @@ __all__ = ['TYPE_RESERVED_WORDS',
 
 TYPE_RESERVED_WORDS = ['double', 'float', 'int32',
                        'uint32', 'int64', 'uint64', 'bool', 'string']
-RESERVED_WORDS = ['message', 'package',
+RESERVED_WORDS = ['syntax', 'message', 'package',
                   '{', '}', ';', 'repeated', '//', '='] + TYPE_RESERVED_WORDS
 
 
@@ -44,6 +44,12 @@ def scan(input: str) -> List[Token]:
                 if line.startswith(word):
                     if word == '//':
                         line = ''
+                    elif word == 'syntax':
+                        if len(tokens) == 0:
+                            line = ''
+                        else:
+                            raise ValueError(
+                                f"Unexpected reserved word `syntax` at line {i}, which should appends before anything")
                     else:
                         tokens.append(Token(word, TokenKind.RESERVED, i+1))
                         line = line[len(word):]
