@@ -60,14 +60,14 @@ def scan(input: str) -> List[Token]:
                 continue
             # scan identifier
             identifier = ''
-            i = 0
-            while i < len(line):
-                if line[:i+1].replace('.', '_').isidentifier():
-                    i += 1
+            n = 0
+            while n < len(line):
+                if line[:n+1].replace('.', '_').isidentifier():
+                    n += 1
                     continue
                 else:
                     break
-            identifier = line[:i]
+            identifier = line[:n]
             if identifier != '':
                 line = line[len(identifier):]
                 tokens.append(Token(identifier, TokenKind.IDENTIDIER, i+1))
