@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ***********************************************************************************
-# * Copyright 2020-2021 Jun Zhang. All Rights Reserved.                                  *
+# * Copyright 2020-2021 Jun Zhang. All Rights Reserved.                             *
 # * Distributed under MIT license.                                                  *
 # * See file LICENSE for details for copy at https://opensource.org/licenses/MIT    *
 # ***********************************************************************************
@@ -27,7 +27,7 @@ class TokenError(Exception):
         self.message = f'{message} <{token.content}>({token.kind}) in line {token.line}'
         super().__init__(self.message)
 
-
+# if stringify in NAME, use `const`
 API_NAME = {
     'parse_entry': 'FromString',
     'parse_worker': 'FromValue',
@@ -186,7 +186,7 @@ class Message(NamedTuple):
     }}
 '''
         stringify_entry = \
-            f'''    std::string {API_NAME["stringify_entry"]}(int maxDecimalPlaces = 6) {{
+            f'''    std::string {API_NAME["stringify_entry"]}(int maxDecimalPlaces = 6) const {{
         rapidjson::Document document;
         document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
         rapidjson::StringBuffer buffer;
@@ -198,7 +198,7 @@ class Message(NamedTuple):
 '''
 
         pretty_stringify_entry = \
-            f'''    std::string {API_NAME["pretty_stringify_entry"]}(int maxDecimalPlaces = 6) {{
+            f'''    std::string {API_NAME["pretty_stringify_entry"]}(int maxDecimalPlaces = 6) const {{
         rapidjson::Document document;
         document.SetObject() = {API_NAME["stringify_worker"]}(document.GetAllocator());
         rapidjson::StringBuffer buffer;
@@ -212,7 +212,7 @@ class Message(NamedTuple):
         anylist = any(e.repeated for e in self.elements.values())
         arraystr = 'rapidjson::Value a;\n' if anylist else ''
         stringify_worker = \
-            f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) {{
+            f'''    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) const {{
         (void)copy;
         rapidjson::Value v(rapidjson::kObjectType);
         {arraystr}

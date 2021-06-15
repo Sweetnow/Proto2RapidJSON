@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ***********************************************************************************
-# * Copyright 2020-2021 Jun Zhang. All Rights Reserved.                                  *
+# * Copyright 2020-2021 Jun Zhang. All Rights Reserved.                             *
 # * Distributed under MIT license.                                                  *
 # * See file LICENSE for details for copy at https://opensource.org/licenses/MIT    *
 # ***********************************************************************************

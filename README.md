@@ -51,9 +51,9 @@ struct B {
     bool isok;
     B& FromString(const char* str);
     B& FromValue(const rapidjson::Value& v);
-    std::string ToString(int maxDecimalPlaces = 6);
-    std::string ToPrettyString(int maxDecimalPlaces = 6);
-    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);
+    std::string ToString(int maxDecimalPlaces = 6) const;
+    std::string ToPrettyString(int maxDecimalPlaces = 6) const;
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) const;
 }
 
 struct A {
@@ -62,9 +62,9 @@ struct A {
     std::vector<B> b;
     A& FromString(const char* str);
     A& FromValue(const rapidjson::Value& v);
-    std::string ToString(int maxDecimalPlaces = 6);
-    std::string ToPrettyString(int maxDecimalPlaces = 6);
-    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);
+    std::string ToString(int maxDecimalPlaces = 6) const;
+    std::string ToPrettyString(int maxDecimalPlaces = 6) const;
+    rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) const;
 }
 ```
 功能如下：
@@ -73,9 +73,9 @@ struct A {
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `A& FromString(const char* str);`                            | 从JSON格式字符串`str`解析数据，写入结构体                    |
 | `A& FromValue(const rapidjson::Value& v);`                   | 从`rapidjson::Value`中获取数据，写入结构体                   |
-| `std::string ToString(int maxDecimalPlaces = 6);`            | 将结构体中数据序列化为字符串（紧凑），浮点数小数部分长度为`maxDecimalPlaces` |
-| `std::string ToPrettyString(int maxDecimalPlaces = 6);`      | 将结构体中数据序列化为字符串（适合阅读），浮点数小数部分长度为`maxDecimalPlaces` |
-| `rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false);` | 将结构体中数据转化为`rapidjson::Value`，对于`array<string>`，`copy`用于控制是否采用`copy-string`策略（默认为`const-string`策略）*注：这里可能有未发现的潜在问题* |
+| `std::string ToString(int maxDecimalPlaces = 6) const;`            | 将结构体中数据序列化为字符串（紧凑），浮点数小数部分长度为`maxDecimalPlaces` |
+| `std::string ToPrettyString(int maxDecimalPlaces = 6) const;`      | 将结构体中数据序列化为字符串（适合阅读），浮点数小数部分长度为`maxDecimalPlaces` |
+| `rapidjson::Value ToValue(rapidjson::Document::AllocatorType& allocator, bool copy = false) const;` | 将结构体中数据转化为`rapidjson::Value`，对于`array<string>`，`copy`用于控制是否采用`copy-string`策略（默认为`const-string`策略）*注：这里可能有未发现的潜在问题* |
 
 
 
